@@ -37,15 +37,13 @@
   "dependencies": {
     "async": "~0.2.6",
     "layout": "~2.2.0",
-    "pixelsmith": "~1.1.0"
+    "pixelsmith": "https://github.com/RetrocadeNet/pixelsmith/tarball/master"
   },
   "devDependencies": {
-    "canvassmith": "~0.2.4",
     "get-pixels": "~3.1.0",
     "jscs": "~1.8.1",
     "jshint": "~2.5.10",
     "mocha": "~1.21.4",
-    "phantomjssmith": "~0.5.1",
     "twolfson-style": "~1.6.0",
     "underscore": "~1.4.4"
   },

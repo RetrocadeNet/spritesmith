@@ -159,6 +159,21 @@ describe('An array of sprites', function () {
     it('has the proper properties', spritesmithUtils.assertProps('padding.properties.json'));
   });
 
+  describe('when provided with an extend parameter', function () {
+    spritesmithUtils.process({
+      sprites: multipleSprites,
+      options: {
+        algorithm: 'binary-tree',
+        extend: 3
+      }
+    });
+
+    it('has no errors', spritesmithUtils.assertNoError());
+    it('renders a padded spritesheet', spritesmithUtils.assertSpritesheet('extend.pixelsmith.png'));
+    it('has the proper coordinates', spritesmithUtils.assertCoordinates('extend.coordinates.json'));
+    it('has the proper properties', spritesmithUtils.assertProps('extend.properties.json'));
+  });
+
   describe('when told not to sort', function () {
     spritesmithUtils.process({
       sprites: multipleSprites,
@@ -191,55 +206,5 @@ describe('An empty array', function () {
       assert.deepEqual(this.result.coordinates, {});
     });
     it('has the proper properties', spritesmithUtils.assertProps('empty.properties.json'));
-  });
-});
-
-describe('`spritesmith` using a custom engine via string', function () {
-  describe('processing a set of images', function () {
-    spritesmithUtils.process({
-      sprites: multipleSprites,
-      options: {
-        engine: 'phantomjssmith'
-      }
-    });
-
-    it('has no errors', spritesmithUtils.assertNoError());
-    it('renders a spritesheet', spritesmithUtils.assertSpritesheet('binaryTree.phantomjs.png'));
-  });
-});
-
-describe('`spritesmith` using a custom engine via an object', function () {
-  describe('processing a set of images', function () {
-    spritesmithUtils.process({
-      sprites: multipleSprites,
-      options: {
-        engine: require('phantomjssmith')
-      }
-    });
-
-    it('has no errors', spritesmithUtils.assertNoError());
-    it('renders a spritesheet', spritesmithUtils.assertSpritesheet('binaryTree.phantomjs.png'));
-  });
-});
-
-// Edge cases
-// Test for https://github.com/twolfson/gulp.spritesmith/issues/22
-var canvassmith;
-try {
-  canvassmith = require('canvassmith');
-} catch (err) {}
-var describeIfCanvassmithExists = canvassmith ? describe : describe.skip;
-describeIfCanvassmithExists('`spritesmith` using `canvassmith`', function () {
-  describe('processing a bad image', function () {
-    spritesmithUtils.process({
-      sprites: [path.join(spriteDir, 'malformed.png')],
-      options: {
-        engine: 'canvassmith'
-      }
-    });
-
-    it('calls back with an error', function () {
-      assert.notEqual(this.err, null);
-    });
   });
 });

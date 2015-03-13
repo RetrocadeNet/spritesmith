@@ -57,7 +57,14 @@ function spritesmith(params, callback) {
   var engineSmith = new EngineSmith(engine);
   var layer = new Layout(algorithmName, params.algorithmOpts);
   var padding = params.padding || 0;
+  var extend = params.extend || 0;
+  if (extend){
+    padding = 0;
+  }
   var exportOpts = params.exportOpts || {};
+  exportOpts.extend = extend;
+  exportOpts.padding = padding;
+
   var packedObj;
 
   // In a waterfall fashion
@@ -72,12 +79,19 @@ function spritesmith(params, callback) {
         // Save the non-padded properties as meta data
         var width = img.width;
         var height = img.height;
-        var meta = {img: img, actualWidth: width, actualHeight: height};
+        var meta = {
+          img: img,
+          actualWidth: width + extend * 2,
+          actualHeight: height + extend * 2,
+          originalWidth: width,
+          originalHeight: height,
+          extend: extend
+        };
 
         // Add the item with padding to our layer
         layer.addItem({
-          width: width + padding,
-          height: height + padding,
+          width: width + padding + extend * 2,
+          height: height + padding + extend * 2,
           meta: meta
         });
       });
@@ -101,7 +115,8 @@ function spritesmith(params, callback) {
           x: item.x,
           y: item.y,
           width: meta.actualWidth,
-          height: meta.actualHeight
+          height: meta.actualHeight,
+          extend: meta.extend
         };
       });
 
